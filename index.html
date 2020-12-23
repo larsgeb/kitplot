@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>KitPlot</title>
+    <title>KitPlot 📸 - Plot your apertures!</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
     <meta charset="UTF-8" />
@@ -19,138 +19,234 @@
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
         integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
+    <style>
+        body {
+            background: #c9d6ff;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 50, 0.8)), url("royalty-free-images/sharegrid-0CDQmNmpKr4-unsplash.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .bg {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 50, 0.8)), url("royalty-free-images/sharegrid-0CDQmNmpKr4-unsplash.jpg");
+
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-attachment: fixed;
+
+            padding-bottom: 100%;
+        }
+
+        .frame {
+            background-color: #fff;
+        }
+
+        .padded {
+            padding: 0 2rem;
+        }
+
+        .level.fill-height {
+            -webkit-box-align: stretch;
+            -ms-flex-align: stretch;
+            align-items: stretch;
+            display: -ms-flexbox;
+            display: flex;
+        }
+
+        .col-6:first-child {
+            padding-left: 0;
+        }
+
+        .col-6:last-child {
+            padding-right: 0;
+        }
+
+        ul {
+            display: flex;
+            list-style: none;
+        }
+
+        li {
+            padding: 0 0.5rem;
+        }
+
+        .btn-info {
+            margin-left: 1rem;
+        }
+    </style>
 </head>
 
-<body style="color: black; background-image:url('pexels-mstudio-1633622.jpg'); background-size: cover; ">
-    <div class="header header-fixed unselectable header-animated">
-        <div class="header-brand">
-            <div class="nav-item no-hover">
-                <h6 class="title">KitPlot</h6>
-            </div>
-        </div>
-        <div class="header-nav" id="header-menu">
-            <div class="nav-left">
-                <div class="nav-item text-center">
-                    <a href="#">
-                        <span class="icon">
-                            <i class="fab fa-wrapper fa-instagram" aria-hidden="true"></i>
-                        </span>
-                    </a>
-                </div>
+<body>
+    <div class="hero">
+        <div class="hero-body">
+            <div class="content">
+                <form class="frame u-no-padding" method="post">
+                    <div class="frame__body u-no-padding">
+                        <div class="row u-no-padding level fill-height">
+                            <div class="col">
+                                <space class="x-large"></space>
+                                <div class="padded content">
+                                    <h1 class="u-text-center u-font-alt">KitPlot 📸</h1>
+                                    <div class="divider"></div>
+                                    <p class="lead"> Calling all gearheads!</p>
+                                    <p>
+                                        Are you, like many other photographers, proud of your kit? Want to show off what
+                                        you got? Well look
+                                        no further!
+                                    </p>
+
+                                    <p>
+                                        This page allows you to generate a plot of the minimum aperture your kit can
+                                        achieve at all focal
+                                        lengths. Are you missing any obvious areas?
+                                    </p>
+
+                                    <p>
+                                        A reminder: good (expensive) lenses don't make good photographers! Don't take
+                                        this site and people
+                                        who values these things too seriously.
+                                    </p>
+
+                                    <div class="divider"></div>
+
+                                    <div class="row ignore-screen level">
+                                        <div class="col-3 ignore-screen level-item">
+                                            <p>Lens type</p>
+                                        </div>
+                                        <div class="col-3 ignore-screen level-item input-control">
+                                            <select class="select input-xsmall" placeholder="Lens type">
+                                                <option>Prime</option>
+                                                <option>Variable aperture zoom</option>
+                                                <option>Fixed aperture zoom</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-3 ignore-screen level-item input-control">
+                                        </div>
+                                    </div>
+                                    <div class="row ignore-screen level">
+                                        <div class="col-3 ignore-screen level-item">
+                                            <p>Focal length</p>
+                                        </div>
+
+                                        <div class="col-3 ignore-screen level-item"><input autocomplete="off"
+                                                type="name" class="input-xsmall" value="min">
+                                        </div>
+                                        -
+                                        <div class="col-3 ignore-screen level-item"><input autocomplete="off"
+                                                type="name" class="input-xsmall" value="max">
+                                        </div>
+                                    </div>
+                                    <div class="row ignore-screen level">
+                                        <div class="col-3 ignore-screen level-item">
+                                            <p>Aperture</p>
+                                        </div>
+
+                                        <div class="col-3 ignore-screen level-item"><input autocomplete="off"
+                                                type="name" class="input-xsmall" value="f @ min">
+                                        </div>
+                                        -
+                                        <div class="col-3 ignore-screen level-item"><input autocomplete="off"
+                                                type="name" class="input-xsmall" value="f @ max">
+                                        </div>
+                                    </div>
+
+                                    <table class="table borderless" id="lenstable">
+                                        <thead>
+                                            <tr>
+                                                <th>Type</th>
+                                                <th>Focal length</th>
+                                                <th>Aperture</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+
+
+                                        <tbody id="lenstable-body">
+
+                                        </tbody>
+                                    </table>
+
+
+                                    <div class="divider"></div>
+
+                                    <!-- <div class="row ignore-screen level">
+                                        <div class="col-6 ignore-screen level-item">
+                                            <div class="col-6 ignore-screen level-item">
+                                                <label for="head">Background color</label>
+                                            </div>
+                                            <div class="col-6 ignore-screen level-item">
+                                                <input type="color" id="head" name="head" value="#FFFFFF"></div>
+
+                                        </div>
+                                    </div> -->
+
+                                    <div class="row ignore-screen level">
+                                        <div class="col-3 ignore-screen level-item">
+                                            <p>Title</span>
+                                        </div>
+                                        <div class="col-9 ignore-screen level-item"><input autocomplete="off"
+                                                type="name" class="plot-input" id="input-title"
+                                                value="The lenses in my kit!">
+                                        </div>
+                                    </div>
+
+                                    <div class="row ignore-screen level">
+                                        <div class="col-3 ignore-screen level-item">
+                                            <p>Axes font size</span>
+                                        </div>
+                                        <div class="col-3 ignore-screen level-item"><input autocomplete="off"
+                                                type="number" class="plot-input input-small" value="12"
+                                                id="input-axes-font-size">
+                                        </div>
+                                        <div class="col-3 ignore-screen level-item">
+                                            <p>Title font size</span>
+                                        </div>
+                                        <div class="col-3 ignore-screen level-item"><input autocomplete="off"
+                                                type="number" class="plot-input input-small" value="20"
+                                                id="input-title-font-size">
+                                        </div>
+
+                                        <div class="divider"></div>
+
+                                        <canvas id="line-chart" height="150" style="margin-top: 50px;"></canvas>
+
+                                        <b>
+                                            <a id="download-button">
+                                                <div class="tag tag--link"> Download result </div>
+                                            </a>
+                                        </b>
+
+                                    </div>
+                                    <space class="x-large"></space>
+                                </div>
+                            </div>
+                        </div>
+                </form>
             </div>
         </div>
     </div>
-
-    <div class="w-80" style="position: absolute; margin: 10%;">
-        <div class=" row">
-            <div class="col-6" style="padding: 2rem">
-                <h1>KitPlot</h1>
-                <p class="lead"> Calling all gearheads!</p>
-                <p>
-                    Are you, like many other photographers, proud of your kit? Want to show off what you got? Well look
-                    no further!
-                </p>
-
-                <p>
-                    This page allows you to generate a plot of the minimum aperture your kit can achieve at all focal
-                    lengths. Are you missing any obvious areas?
-                </p>
-
-                <p>
-                    A reminder: good (expensive) lenses don't make good photographers! Don't take this site and people
-                    who values these things too seriously.
-                </p>
-
-                <div class="modal" id="modal-id">
-                    <a href="#target" class="modal-overlay close-btn" aria-label="Close"></a>
-                    <div class="modal-content" role="document">
-                        <div class="modal-header">
-                            <a href="#components" class="pull-right" aria-label="Close"><span class="icon"><i
-                                        class="fa fa-wrapper fa-times"></i></span></a>
-                        </div>
-                        <div class="modal-body">
-                            Here you input the lenses in your kit. For zoom lenses, input the focal lengths separated by
-                            a dash. When your zoom is fixed focal length, you can input just one. When the zoom is of
-                            variable aperture, separate the two extreme values by a dash. The plotter assumes maximum
-                            aperture varies linearly between the two focal length extremes.
-                        </div>
-                        <div class="modal-footer">
-                            <!-- Rows, buttons, etc... -->
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <table class="table borderless" id="lenstable">
-                    <thead>
-                        <tr>
-                            <th>Type</th>
-                            <th>Focal length</th>
-                            <th>Aperture</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-
-                    <tbody id="lenstable-body">
-
-                    </tbody>
-                </table>
-
-
-
-                <!-- 
-                <div class="form-group">
-                    <input type="text" placeholder="Enter your email address." />
-                    <button class="form-group-btn btn-link"> Sign Up </button>
-                </div> -->
-            </div>
-
-
-            <div class="row ignore-screen level">
-                <div class="col-3 ignore-screen level-item">
-                    <p>Axes font size</span>
-                </div>
-                <div class="col-3 ignore-screen level-item"><input autocomplete="off" type="number"
-                        class="plot-input input-small" value="12" id="input-axes-font-size">
-                </div>
-                <div class="col-3 ignore-screen level-item">
-                    <p>Title font size</span>
-                </div>
-                <div class="col-3 ignore-screen level-item"><input autocomplete="off" type="number"
-                        class="plot-input input-small" value="20" id="input-title-font-size">
-                </div>
-
-                <canvas id="line-chart" height="150"></canvas>
-
-                <b>
-                    <a id="download-button">
-                        <div class="tag tag--link"> Download result </div>
-                    </a>
-                </b>
-            </div>
-        </div>
-    </div>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="alt_files/js.js"></script>
 
     <script>
 
 
-        var user_title = "My camera kit!"
+        var user_title = "Made with KitPlot"
         var user_fontsize = 20
         var user_fontsize_axes = 14
+        var backgroundColor = "#FFFFFF";
 
-        // var backgroundColor = 'black';
-        // Chart.plugins.register({
-        //     beforeDraw: function (c) {
-        //         var ctx = c.chart.ctx;
-        //         ctx.fillStyle = backgroundColor;
-        //         ctx.fillRect(0, 0, c.chart.width, c.chart.height);
-        //     }
-        // });
+
+        Chart.plugins.register({
+            beforeDraw: function (c) {
+                var ctx = c.chart.ctx;
+                ctx.fillStyle = backgroundColor;
+                ctx.fillRect(0, 0, c.chart.width, c.chart.height);
+            }
+        });
 
         Chart.defaults.global.animation.duration = 00;
         Chart.defaults.global.animation.easing = 'easeInOutQuad';
@@ -239,7 +335,6 @@
 
                 if (this.data.length == 1) {
                     this.pointStyle = 'circle'
-
                     this.backgroundColor = 'red';
                     this.borderColor = 'red';
                     this.radius = 4;
@@ -250,6 +345,8 @@
                 };
             }
         }
+
+
 
 
         function refreshPlot() {
@@ -265,7 +362,7 @@
                     datasets: plot_objects
                 },
                 options: {
-                    title: { display: true, text: "My camera kit!", fontSize: user_fontsize },
+                    title: { display: true, text: user_title, fontSize: user_fontsize },
                     animation: {
                         onComplete: function () {
 
@@ -280,7 +377,15 @@
                         yAxes: [{
                             ticks: {
                                 beginAtZero: true,
+                                stepSize: 0.1,
                                 fontSize: user_fontsize_axes,
+                                callback: function (value, index, values) {
+                                    if ([1, 1.4, 2, 2.8, 4, 5.6, 8, 11, 16, 22, 28].includes(value)) {
+                                        return `f/${value}`;
+                                    } else {
+                                        return undefined
+                                    }
+                                }
                             },
                             scaleLabel: {
                                 display: true,
@@ -344,6 +449,13 @@
 
             user_fontsize_axes = $('#input-axes-font-size').val()
             user_fontsize = $('#input-title-font-size').val()
+            user_title = $('#input-title').val();
+
+            if (user_title == "") {
+                user_title = `Made with KitPlot`
+            } else {
+                user_title += ` - made with KitPlot`
+            }
 
             updateList();
             refreshPlot();
