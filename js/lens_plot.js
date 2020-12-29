@@ -1,6 +1,6 @@
 var user_title = "My kit!";
 var user_fontsize = 20;
-var user_fontsize_axes = 14;
+var user_fontsize_axes = 12;
 var backgroundColor = "#FFFFFF";
 
 var image = new Image();
