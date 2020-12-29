@@ -1,0 +1,3 @@
+[submodule "Cirrus"]
+	path = Cirrus
+	url = https://github.com/Spiderpig86/Cirrus.git
