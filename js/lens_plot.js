@@ -293,6 +293,8 @@ function refreshPlot() {
                                     500,
                                     800,
                                     1000,
+                                    1500,
+                                    2000,
                                 ].includes(value)
                             ) {
                                 return `${value}mm`;
