@@ -3,105 +3,38 @@
 
 <head>
     <title>KitPlot 📸 - Plot your apertures!</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
-
+    <meta name="description" content="A tool to plot the lenses in your photography kit! See what focal lengths and apertures you are missing.">
+    <meta name="keywords" content="photographers, photography, lenses, aperture, focal length, tools, plots, visualization, zoom, prime, gear, gearhead">
+    <meta name="author" content="Lars Gebraad">
     <link href="https://unpkg.com/cirrus-ui" type="text/css" rel="stylesheet" />
-
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" />
-
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-        integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous" />
-
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous" />
+    <script>
+        // Force HTTPS if on kitplot.com
+        var host = "kitplot.com"
+        if (window.location.host == host && window.location.protocol != "https:") {
+            window.location.protocol = "https:"
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-
-    <style>
-        body {
-            background: #c9d6ff;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 50, 0.8)), url("royalty-free-images/sharegrid-0CDQmNmpKr4-unsplash.jpg");
-            background-size: cover;
-            background-attachment: fixed;
-        }
-
-        .bg {
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 50, 0.8)), url("royalty-free-images/sharegrid-0CDQmNmpKr4-unsplash.jpg");
-
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: top center;
-            background-attachment: fixed;
-
-            padding-bottom: 100%;
-        }
-
-        .frame {
-            background-color: #fff;
-        }
-
-        .padded {
-            padding: 0 2rem;
-        }
-
-        .level.fill-height {
-            -webkit-box-align: stretch;
-            -ms-flex-align: stretch;
-            align-items: stretch;
-            display: -ms-flexbox;
-            display: flex;
-        }
-
-        .col-6:first-child {
-            padding-left: 0;
-        }
-
-        .col-6:last-child {
-            padding-right: 0;
-        }
-
-        h1 {
-            padding-top: 50px;
-            padding-bottom: 50px;
-        }
-
-        ul {
-            display: flex;
-            list-style: none;
-        }
-
-        li {
-            padding: 0 0.5rem;
-        }
-
-        .btn-info {
-            margin-left: 1rem;
-        }
-
-        .content-body {
-            width: 98%;
-        }
-
-        .content-outer {
-            margin: 100px auto 1.5em;
-            width: 100%;
-        }
-    </style>
-
+    <script src="js/chartjs-plugin-watermark.min.js"></script>
+    <link rel="stylesheet" href="css/custom.css" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-881LQY3DZL"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
 
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
         gtag('config', 'G-881LQY3DZL');
     </script>
-
 </head>
 
 <body>
@@ -114,45 +47,32 @@
                             <div class="col">
                                 <space class="x-large"></space>
                                 <div class="padded content content-body">
-                                    <h1 class="u-text-center u-font-alt">KitPlot 📸</h1>
+                                    <h1 class="u-text-center u-font-alt" id="hero-title">KitPlot 📸</h1>
                                     <div class="divider"></div>
                                     <p class="lead"> Calling all gearheads!</p>
                                     <p>
-                                        Are you, like many other photographers, proud of your kit? Want to show off what
-                                        you got? Well look
-                                        no further!
+                                        Are you, like many other photographers, proud of your kit? Want to show off what you got? Well look no further!
                                     </p>
-
                                     <p>
-                                        This page allows you to generate a plot of the minimum aperture your kit can
-                                        achieve at all focal
-                                        lengths. Are you missing any obvious areas?
+                                        This page allows you to generate a plot of the minimum aperture your kit can achieve at all focal lengths. Are you missing any obvious areas?
                                     </p>
-
                                     <p>
-                                        A reminder: good (expensive) lenses don't make good photographers! Don't take
-                                        this site and people
-                                        who values these things too seriously.
+                                        A reminder: good (expensive) lenses don't make good photographers! Don't take this site and people who values these things too seriously.
                                     </p>
                                     <div class="divider"></div>
                                     <div class="row ">
                                         <div class="col-4">
                                             <div class="card">
                                                 <div class="content">
-                                                    <!-- Content -->
                                                     <p>Prime lens</p>
-                                                    <input autocomplete="off" type="name" class="input-xsmall"
-                                                        placeholder="Focal length" id="prime-focal">
-                                                    <input autocomplete="off" type="name" class="input-xsmall"
-                                                        placeholder="Max aperture" id="prime-aperture">
+                                                    <input autocomplete="off" type="name" class="input-xsmall" placeholder="Focal length" id="prime-focal">
+                                                    <input autocomplete="off" type="name" class="input-xsmall" placeholder="Max aperture" id="prime-aperture">
                                                 </div>
                                                 <a onclick="addPrime()" style="padding: 0;">
                                                     <div class="action-bar u-center">
-                                                        <!-- Action Bar -->
                                                         Add
                                                     </div>
                                                 </a>
-
                                             </div>
                                         </div>
                                         <div class="col-4">
@@ -160,55 +80,34 @@
                                                 <div class="content">
                                                     <!-- Content -->
                                                     <p>Variable aperture zoom lens</p>
-                                                    <input autocomplete="off" type="name" class="input-xsmall"
-                                                        placeholder="Min focal length" id="var-zoom-focal-min">
-                                                    <input autocomplete="off" type="name" class="input-xsmall"
-                                                        placeholder="Max aperture @ min" id="var-zoom-aperture-min">
-                                                    -
-                                                    <input autocomplete="off" type="name" class="input-xsmall"
-                                                        placeholder="Max focal length" id="var-zoom-focal-max">
-                                                    <input autocomplete="off" type="name" class="input-xsmall"
-                                                        placeholder="Max aperture @ max" id="var-zoom-aperture-max">
+                                                    <input autocomplete="off" type="name" class="input-xsmall" placeholder="Min focal length" id="var-zoom-focal-min">
+                                                    <input autocomplete="off" type="name" class="input-xsmall" placeholder="Max aperture @ min" id="var-zoom-aperture-min"> -
+                                                    <input autocomplete="off" type="name" class="input-xsmall" placeholder="Max focal length" id="var-zoom-focal-max">
+                                                    <input autocomplete="off" type="name" class="input-xsmall" placeholder="Max aperture @ max" id="var-zoom-aperture-max">
                                                 </div>
                                                 <a onclick="addVarZoom()" style="padding: 0;">
                                                     <div class="action-bar u-center">
-                                                        <!-- Action Bar -->
                                                         Add
                                                     </div>
                                                 </a>
-
                                             </div>
                                         </div>
-
                                         <div class="col-4">
                                             <div class="card">
                                                 <div class="content">
-                                                    <!-- Content -->
                                                     <p>Fixed aperture zoom lens</p>
-
-                                                    <input autocomplete="off" type="name" class="input-xsmall"
-                                                        placeholder="Min focal length" id="fix-zoom-focal-min">
-
-                                                    -
-                                                    <input autocomplete="off" type="name" class="input-xsmall"
-                                                        placeholder="Max focal length" id="fix-zoom-focal-max">
-                                                    /
-                                                    <input autocomplete="off" type="name" class="input-xsmall"
-                                                        placeholder="Max aperture" id="fix-zoom-aperture">
+                                                    <input autocomplete="off" type="name" class="input-xsmall" placeholder="Min focal length" id="fix-zoom-focal-min"> -
+                                                    <input autocomplete="off" type="name" class="input-xsmall" placeholder="Max focal length" id="fix-zoom-focal-max"> /
+                                                    <input autocomplete="off" type="name" class="input-xsmall" placeholder="Max aperture" id="fix-zoom-aperture">
                                                 </div>
                                                 <a onclick="addFixZoom()" style="padding: 0;">
                                                     <div class="action-bar u-center">
-                                                        <!-- Action Bar -->
                                                         Add
                                                     </div>
                                                 </a>
-
                                             </div>
                                         </div>
                                     </div>
-
-
-
                                     <table class="table borderless" id="lenstable">
                                         <thead>
                                             <tr>
@@ -218,390 +117,50 @@
                                                 <th></th>
                                             </tr>
                                         </thead>
-
-
                                         <tbody id="lenstable-body">
-
                                         </tbody>
                                     </table>
-
-
                                     <div class="divider"></div>
-
-
                                     <div class="row ignore-screen level">
                                         <div class="col-3 ignore-screen level-item">
                                             <p>Title</span>
                                         </div>
-                                        <div class="col-9 ignore-screen level-item"><input autocomplete="off"
-                                                type="name" class="plot-input" id="input-title"
-                                                value="The lenses in my kit!">
+                                        <div class="col-9 ignore-screen level-item"><input autocomplete="off" type="name" class="plot-input" id="input-title" value="The lenses in my kit!">
                                         </div>
                                     </div>
-
                                     <div class="row ignore-screen level">
                                         <div class="col-3 ignore-screen level-item">
                                             <p>Axes font size</span>
                                         </div>
-                                        <div class="col-3 ignore-screen level-item"><input autocomplete="off"
-                                                type="number" class="plot-input input-small" value="12"
-                                                id="input-axes-font-size">
+                                        <div class="col-3 ignore-screen level-item"><input autocomplete="off" type="number" class="plot-input input-small" value="12" id="input-axes-font-size">
                                         </div>
                                         <div class="col-3 ignore-screen level-item">
                                             <p>Title font size</span>
                                         </div>
-                                        <div class="col-3 ignore-screen level-item"><input autocomplete="off"
-                                                type="number" class="plot-input input-small" value="20"
-                                                id="input-title-font-size">
+                                        <div class="col-3 ignore-screen level-item"><input autocomplete="off" type="number" class="plot-input input-small" value="20" id="input-title-font-size">
                                         </div>
-
                                         <div class="divider"></div>
-
                                         <canvas id="line-chart" height="150" style="margin-top: 50px;"></canvas>
-
                                         <b>
                                             <a id="download-button">
                                                 <div class="tag tag--link"> Download result </div>
                                             </a>
                                         </b>
-
                                     </div>
-
-                                    <div class="divider"></div>
-
-                                    <p>Hi, I'm Lars, and I like photography and programming. I built this website in my
-                                        free time. It shouldn't be taken too seriously. This site was built using open
-                                        technologies. The source code itself is licensed using th BSD-3 Clause license
-                                        and
-                                        can be found on <a href="https://github.com/larsgeb/kitplot">Github</a>.</p>
-
-                                    <p>If you like this, you could check out my <a
-                                            href="https://flic.kr/ps/39vM91">Flickr</a> or <a
-                                            href="https://www.instagram.com/larsgebraad">Instagram</a> and
-                                        chill and
-                                        discuss
-                                        photography with me! Cheers.
+                                    <div class="divider" id="footer-divider"></div>
+                                    <p>Hi, I'm Lars, and I like photography and programming. I built this website in my free time. It shouldn't be taken too seriously. This site was built using open technologies. The source code itself is licensed using
+                                        th BSD-3 Clause license and can be found on <a href="https://github.com/larsgeb/kitplot">Github</a>.</p>
+                                    <p>If you like this, you could check out my <a href="https://flic.kr/ps/39vM91">Flickr</a> or <a href="https://www.instagram.com/larsgebraad">Instagram</a> and chill and discuss photography with me! Cheers.
                                     </p>
 
                                 </div>
                             </div>
                         </div>
                 </form>
+                </div>
             </div>
         </div>
-    </div>
-
-    <script>
-
-
-        var user_title = "Made with KitPlot"
-        var user_fontsize = 20
-        var user_fontsize_axes = 14
-        var backgroundColor = "#FFFFFF";
-
-
-        Chart.plugins.register({
-            beforeDraw: function (c) {
-                var ctx = c.chart.ctx;
-                ctx.fillStyle = backgroundColor;
-                ctx.fillRect(0, 0, c.chart.width, c.chart.height);
-            }
-        });
-
-        Chart.defaults.global.animation.duration = 00;
-        Chart.defaults.global.animation.easing = 'easeInOutQuad';
-        Chart.defaults.global.tooltips.enabled = 'false';
-
-
-        class lens {
-            constructor(type, focal_range, aperture_range) {
-                this.type = type;
-                this.focal_range = focal_range;
-                this.aperture_range = aperture_range;
-
-                // Generate once and store as attribute.
-                this.hash_code = this.hashCode()
-            }
-
-            toString() {
-                return `Lens: ${this.type}, ${this.focal_range}, ${this.aperture_range}`;
-            }
-
-            toData() {
-                if (this.type == "Prime") {
-                    return [[this.focal_range, this.aperture_range]]
-                } else {
-                    if (Array.isArray(this.aperture_range)) {
-                        return [[this.focal_range[0], this.aperture_range[0]], [this.focal_range[1], this.aperture_range[1]]]
-                    } else {
-                        return [[this.focal_range[0], this.aperture_range], [this.focal_range[1], this.aperture_range]]
-                    }
-                }
-            }
-
-            print() {
-                console.log(
-                    `Lens: ${this.type}, ${this.focal_range}, ${this.aperture_range}`
-                );
-            }
-
-            toRow() {
-                if (this.type == "Prime") {
-                    return `<tr>` + `<td>${this.type}</td>` + `<td>${this.focal_range}</td>` + `<td>${this.aperture_range}</td>` + `<td><a class="remove-lens" id="${this.hash_code}" onclick="removeLens(this)">remove</a></td>` + `</tr>`
-                } else {
-                    var focal_range = `${this.focal_range[0]} - ${this.focal_range[1]}`
-
-                    if (Array.isArray(this.aperture_range)) {
-                        var aperture = `${this.aperture_range[0]} - ${this.aperture_range[1]}`
-                    } else {
-                        var aperture = this.aperture_range
-                    }
-
-                    return `<tr>` + `<td>${this.type}</td>` + `<td>${focal_range}</td>` + `<td>${aperture}</td>` + `<td><a class="remove-lens" id="${this.hash_code}" onclick="removeLens(this)">remove</a></td>` + `</tr>`
-                }
-
-            }
-
-
-            hashCode() {
-                return this.toString().split("").reduce(function (a, b) { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0);
-            }
-
-        }
-
-        lenses = [new lens("Zoom", [14, 30], 4), new lens("Prime", 20, 1.8), new lens("Prime", 50, 1.8), new lens("Zoom", [24, 70], [2.8, 4]), new lens("Zoom", [70, 300], [4.5, 5.6]), new lens("Prime", 800, 5.6)];
-
-        function updateList() {
-            var lenstable = document.getElementById("lenstable-body");
-
-            lenstable.innerHTML = ""
-
-            lenses.forEach(function (arrayItem) {
-                lenstable.innerHTML += arrayItem.toRow();
-            });
-
-        }
-
-        function addPrime() {
-
-            var focal = $('#prime-focal').val();
-            var aperture = $('#prime-aperture').val();
-
-            $('#prime-focal').val("");
-            $('#prime-aperture').val("");
-
-
-            if (isNaN(focal) || isNaN(aperture)) {
-                return
-            }
-
-            var lens_to_add = new lens("Prime", focal, aperture)
-
-            if (typeof (checkAlreadyExists(lens_to_add.hash_code)) == "undefined") {
-                lenses.push(lens_to_add)
-                updateList();
-                refreshPlot();
-            }
-
-        }
-        function addVarZoom() {
-
-            var focal_min = $('#var-zoom-focal-min').val();
-            var focal_max = $('#var-zoom-focal-max').val();
-            var aperture_min = $('#var-zoom-aperture-min').val();
-            var aperture_max = $('#var-zoom-aperture-max').val();
-
-            $('#var-zoom-focal-min').val("");
-            $('#var-zoom-focal-max').val("");
-            $('#var-zoom-aperture-min').val("");
-            $('#var-zoom-aperture-max').val("");
-
-            if (isNaN(focal_min) || isNaN(focal_max) || isNaN(aperture_min) || isNaN(aperture_max)) {
-                return
-            }
-
-            var lens_to_add = new lens("Zoom", [focal_min, focal_max], [aperture_min, aperture_max])
-
-            if (typeof (checkAlreadyExists(lens_to_add.hash_code)) == "undefined") {
-                lenses.push(lens_to_add)
-                updateList();
-                refreshPlot();
-            }
-
-        }
-        function addFixZoom() {
-
-            var focal_min = $('#fix-zoom-focal-min').val();
-            var focal_max = $('#fix-zoom-focal-max').val();
-            var aperture = $('#fix-zoom-aperture').val();
-
-            $('#fix-zoom-focal-min').val("");
-            $('#fix-zoom-focal-max').val("");
-            $('#fix-zoom-aperture').val("");
-
-            if (isNaN(focal_min) || isNaN(focal_max) || isNaN(aperture)) {
-                return
-            }
-
-            var lens_to_add = new lens("Zoom", [focal_min, focal_max], aperture)
-
-
-
-            if (typeof (checkAlreadyExists(lens_to_add.hash_code)) == "undefined") {
-                lenses.push(lens_to_add)
-                updateList();
-                refreshPlot();
-            }
-
-        }
-
-        function checkAlreadyExists(hash_to_check) {
-            var hashes = lenses.map(lens => lens.hash_code)
-            index_of_lens_to_remove = hashes.find(hash => hash == hash_to_check)
-            return index_of_lens_to_remove
-        }
-
-
-
-
-        class plot_object {
-            constructor(data_passed) {
-                this.data = data_passed.map(o => ({ x: o[0], y: o[1] }));
-                this.label = null;
-                this.showLine = true;
-                this.fill = false;
-
-                if (this.data.length == 1) {
-                    this.pointStyle = 'circle'
-                    this.backgroundColor = 'red';
-                    this.borderColor = 'red';
-                    this.radius = 4;
-                } else {
-                    this.pointStyle = 'circle'
-                    this.backgroundColor = 'black';
-                    this.borderColor = 'black';
-                };
-            }
-        }
-
-
-
-
-        function refreshPlot() {
-
-            var plot_objects = lenses.map(lens => new plot_object(lens.toData()))
-
-            console.log("Drawing the plot.")
-
-            return new Chart('line-chart', {
-                type: "scatter",
-                responsive: true,
-                data: {
-                    datasets: plot_objects
-                },
-                options: {
-                    title: { display: true, text: user_title, fontSize: user_fontsize },
-                    animation: {
-                        onComplete: function () {
-
-                            var a = document.getElementById('download-button');
-                            a.href = this.toBase64Image();
-                            a.download = 'plot_of_your_kit.png';
-
-                        }
-                    },
-                    tooltips: { enabled: false },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                                stepSize: 0.1,
-                                fontSize: user_fontsize_axes,
-                                callback: function (value, index, values) {
-                                    if ([1, 1.4, 2, 2.8, 4, 5.6, 8, 11, 16, 22, 28].includes(value)) {
-                                        return `f/${value}`;
-                                    } else {
-                                        return undefined
-                                    }
-                                }
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'aperture',
-                                fontSize: user_fontsize_axes
-                            },
-                        }],
-                        xAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'focal length',
-                                fontSize: user_fontsize_axes
-                            },
-                            type: 'logarithmic',
-                            ticks: {
-                                fontSize: user_fontsize_axes,
-                                stepSize: 1,
-                                // max: 85,
-                                // autoSkip: true,
-                                // maxTicksLimit: 8,
-                                callback: function (value, index, values) {
-                                    if ([8, 10, 20, 30, 50, 85, 100, 135, 200, 300, 500, 800, 1000].includes(value)) {
-                                        return `${value}mm`;
-                                    } else {
-                                        return undefined
-                                    }
-                                }
-                            },
-
-                        }]
-                    },
-                    legend: { display: false }
-                }
-            });
-        }
-
-        updateList();
-        refreshPlot();
-
-        var refresh_button = document.getElementById("refresh-button");
-
-        Chart.defaults.global.animation.duration = 0;
-
-
-
-
-        function removeLens(passedObject) {
-            var hash_to_remove = passedObject.id
-
-            var hashes = lenses.map(lens => lens.hash_code)
-
-            index_of_lens_to_remove = hashes.findIndex(hash => hash == hash_to_remove)
-
-            lenses.splice(index_of_lens_to_remove, 1);
-
-            updateList();
-            refreshPlot();
-        }
-
-        $('.plot-input').on('input', function (e) {
-
-            user_fontsize_axes = $('#input-axes-font-size').val()
-            user_fontsize = $('#input-title-font-size').val()
-            user_title = $('#input-title').val();
-
-            if (user_title == "") {
-                user_title = `Made with KitPlot`
-            } else {
-                user_title += ` - made with KitPlot`
-            }
-
-            updateList();
-            refreshPlot();
-
-        });
-
-
-    </script>
+        <script src="js/lens_plot.js"></script>
 </body>
 
 </html>
